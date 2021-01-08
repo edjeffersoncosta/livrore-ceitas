@@ -1,0 +1,225 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled0.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyPtIZ5FhTEA6EHNRDmWmYti",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/edjeffersoncosta/livrore-ceitas/blob/master/Primeira%20aula%20Machine%20Learning\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "hjlm96XeXfDx"
+      },
+      "source": [
+        ""
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "FbSj8eRcHxXS"
+      },
+      "source": [
+        "# features (1 sim, 0 não)\r\n",
+        "# pelo longo?\r\n",
+        "# perna curta?\r\n",
+        "# faz auau?\r\n",
+        "porco1 = [0, 1, 0]\r\n",
+        "porco2 = [0, 1, 1]\r\n",
+        "porco3 = [1, 1, 0]  \r\n",
+        "\r\n",
+        "cachorro1 = [0, 1, 1]\r\n",
+        "cachorro2 = [1, 0, 1]\r\n",
+        "cachorro3 = [1, 1, 1]\r\n",
+        "\r\n",
+        "# 1 => porco, 0 => cachorro\r\n",
+        "treino_x = [porco1, porco2, porco3, cachorro1, cachorro2, cachorro3]\r\n",
+        "treino_y = [1,1,1,0,0,0]"
+      ],
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "AW8qCeGOKILG",
+        "outputId": "1b8df48b-4e71-47b5-c93f-49f18f33e8df"
+      },
+      "source": [
+        "from sklearn.svm import LinearSVC\r\n",
+        "\r\n",
+        "model = LinearSVC()\r\n",
+        "model.fit(treino_x, treino_y)"
+      ],
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,\n",
+              "          intercept_scaling=1, loss='squared_hinge', max_iter=1000,\n",
+              "          multi_class='ovr', penalty='l2', random_state=None, tol=0.0001,\n",
+              "          verbose=0)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 9
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "aybtNhnYMqa5",
+        "outputId": "c0377d67-35ca-4465-ea81-621f5a8ecdf7"
+      },
+      "source": [
+        "animal_misterioso = [1,1,1]\r\n",
+        "model.predict([animal_misterioso])"
+      ],
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([0])"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 10
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "AJaAWx0OOcaY"
+      },
+      "source": [
+        "misterio1 = [1,1,1]\r\n",
+        "misterio2 = [1,1,0]\r\n",
+        "misterio3 = [0,1,1]\r\n",
+        "\r\n",
+        "testes_x = [misterio1, misterio2, misterio3]\r\n",
+        "testes_y = [0, 1, 1]"
+      ],
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "k2VT31ILPFB_"
+      },
+      "source": [
+        "previsoes = model.predict(testes_x)"
+      ],
+      "execution_count": 12,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "d6IrleHGQNPs",
+        "outputId": "20548492-a131-42e7-b9ae-a3ab167f4247"
+      },
+      "source": [
+        "corretos = (previsoes == testes_y).sum()\r\n",
+        "total = len(testes_x)\r\n",
+        "taxa_de_acerto = corretos/total\r\n",
+        "print(\"taxa de acerto %.2f\" % (taxa_de_acerto * 100))\r\n"
+      ],
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "taxa de acerto 66.67\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OmE4450PSFNg",
+        "outputId": "2279420b-571e-46af-df80-a638e4600981"
+      },
+      "source": [
+        "from sklearn.metrics import accuracy_score\r\n",
+        "taxa_de_acerto = accuracy_score(testes_y, previsoes)\r\n",
+        "print(\"taxa de acerto %.2f\" % (taxa_de_acerto * 100))"
+      ],
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "taxa de acerto 66.67\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "vTruDkrCSLqn"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 14,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "lYKcHvMXR8-K"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 14,
+      "outputs": []
+    }
+  ]
+}
